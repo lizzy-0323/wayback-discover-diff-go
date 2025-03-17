@@ -1,0 +1,14 @@
+redis:
+  url: "localhost:6379"
+
+simhash:
+  size: 64
+  expire_after: 86400  # 24 hours in seconds
+
+snapshots:
+  number_per_year: 1000
+
+threads: 4
+cdx_auth_token: ""  # Optional: Your Wayback Machine CDX Server auth token
+max_downloads: 1000000  # Maximum download size in bytes
+max_errors: 10  # Maximum consecutive download errors before stopping
