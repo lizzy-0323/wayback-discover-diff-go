@@ -15,7 +15,7 @@ import (
 
 	"wayback-discover-diff/config"
 	"wayback-discover-diff/internal/handler"
-	"wayback-discover-diff/pkg/worker"
+	wk "wayback-discover-diff/pkg/worker"
 )
 
 func main() {
@@ -43,12 +43,12 @@ func main() {
 		},
 	)
 
-	// Initialize worker, I know this variable name sucks :)
-	w := worker.NewWorker(redisClient)
+	// Initialize worker
+	worker := wk.NewWorker(redisClient)
 
 	// Register task handler
 	mux := asynq.NewServeMux()
-	mux.HandleFunc(worker.TypeCalculateSimHash, w.HandleCalculateSimHash)
+	mux.HandleFunc(wk.TypeCalculateSimHash, worker.HandleCalculateSimHash)
 
 	// Start task processor in background
 	go func() {
@@ -88,10 +88,9 @@ func main() {
 	// Graceful shutdown
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
+
 	log.Println("Shutting down server...")
-	// Shutdown Asynq server
 	srv.Shutdown()
-	// Shutdown HTTP server
 	if err := httpSrv.Shutdown(ctx); err != nil {
 		log.Printf("HTTP server shutdown error: %v", err)
 	}

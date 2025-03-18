@@ -11,7 +11,6 @@ A Go-based implementation of the Wayback Machine Discover Diff service.
 ## Installing
 
 ```sh
-go mod init wayback-discover-diff
 go mod tidy
 ```
 
